@@ -1,1 +1,90 @@
-t("https://raw.githubusercontent.com/Jahajdkk/Script-beta/main/Beta%20script%20AP%20Era%20☣%EF%B8%8F☠%EF%B8%8F☣%EF%B8%8F?token=GHSAT0AAAAAACVI7Y5PDQ23ZD2KXHE3LV56ZVJIXNQ",true))()
+const { Client, GatewayIntentBits, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { keepAlive } = require('./keep_alive.js');
+
+const TOKEN = process.env.BOT_TOKEN;
+
+// Inicia o servidor HTTP para manter o bot ativo
+keepAlive();
+
+// Configuração do bot
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
+});
+
+client.once('ready', () => {
+  console.log(`✅ Bot ${client.user.tag} está online!`);
+});
+
+client.on('messageCreate', async message => {
+  if (message.content === '!buy') {
+    const embed = new EmbedBuilder()
+      .setTitle('🛒 Produtos para Comprar')
+      .setDescription('Escolha um produto abaixo para saber mais!')
+      .setColor(0x00FF00)
+      .setImage('https://cdn.discordapp.com/attachments/1032230678902870027/1343320930667073609/Screenshot_2025-02-23-17-37-29-238_com.google.android.googlequicksearchbox.png');
+
+    const ffh4xAndroidButton = new ButtonBuilder()
+      .setCustomId('ffh4x-android')
+      .setLabel('FFH4X ANDROID')
+      .setStyle(ButtonStyle.Primary);
+
+    const ffh4xIphoneButton = new ButtonBuilder()
+      .setCustomId('ffh4x-iphone')
+      .setLabel('FFH4X iPhone')
+      .setStyle(ButtonStyle.Primary);
+
+    const headtrickButton = new ButtonBuilder()
+      .setCustomId('headtrick')
+      .setLabel('Headtrick')
+      .setStyle(ButtonStyle.Primary);
+
+    const hsPescoçoButton = new ButtonBuilder()
+      .setCustomId('hs-pescoço')
+      .setLabel('HS Pescoço')
+      .setStyle(ButtonStyle.Primary);
+
+    const likesButton = new ButtonBuilder()
+      .setCustomId('likes')
+      .setLabel('Likes')
+      .setStyle(ButtonStyle.Primary);
+
+    const row = new ActionRowBuilder().addComponents(
+      ffh4xAndroidButton,
+      ffh4xIphoneButton,
+      headtrickButton,
+      hsPescoçoButton,
+      likesButton
+    );
+
+    await message.channel.send({ embeds: [embed], components: [row] });
+  }
+});
+
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isButton()) return;
+
+  let responseMessage = '';
+
+  if (interaction.customId === 'ffh4x-android') {
+    responseMessage = '💵 **FFH4X ANDROID**\nPreço: R$25,00\nFuncionalidades: AIMBOT, Bala Mágica, Esp. Esconder painel.';
+  } else if (interaction.customId === 'ffh4x-iphone') {
+    responseMessage = '💵 **FFH4X iPhone**\nPreço: R$35,00\nFuncionalidades para iOS, mesma qualidade!';
+  } else if (interaction.customId === 'headtrick') {
+    responseMessage = '💵 **Headtrick**\nPreço: R$10,00\nFuncionalidade de Aimbot e melhorias.';
+  } else if (interaction.customId === 'hs-pescoço') {
+    responseMessage = '💵 **HS Pescoço**\nPreço: R$15,00\nFunção para Headshot preciso.';
+  } else if (interaction.customId === 'likes') {
+    responseMessage = '💵 **Likes**\nPreço: R$5,00\nAumente os likes nas suas postagens.';
+  }
+
+  await interaction.reply({
+    content: responseMessage + '\n💰 **Chave Pix:** jaoojssjkz@gmail.com\n📜 **Após pagar, envie o comprovante para um ADM.**',
+    ephemeral: true
+  });
+});
+
+client.login(TOKEN);
